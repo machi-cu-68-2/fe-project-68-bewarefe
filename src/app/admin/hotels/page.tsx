@@ -14,7 +14,7 @@ import { setHotelMeta, getHotelMeta } from "@/redux/features/bookSlice";
 import AdminHotelFormPanel from "@/components/admin/AdminHotelFormPanel";
 import AdminHotelListPanel from "@/components/admin/AdminHotelListPanel";
 
-type Hotel = { _id: string; name: string; address: string; tel: string; picture?: string };
+type Hotel = { _id: string; name: string; address: string; tel: string; picture?: string; rating?: number; description?: string };
 
 export default function AdminHotelsPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -66,8 +66,8 @@ export default function AdminHotelsPage() {
     setSubmitting(true);
     try {
       const result = formMode === "create"
-        ? await createHotelAction(name, address, tel)
-        : await updateHotelAction(editingId, name, address, tel);
+        ? await createHotelAction(name, address, tel, picture || undefined, rating, description || undefined)
+        : await updateHotelAction(editingId, name, address, tel, picture || undefined, rating, description || undefined);
 
       if (result.success) {
         const hId = formMode === "create" ? result.data?.data?._id : editingId;
@@ -88,7 +88,7 @@ export default function AdminHotelsPage() {
     setFormMode("edit"); setEditingId(h._id);
     setName(h.name); setAddress(h.address); setTel(h.tel); setPicture(h.picture || "");
     const m = getHotelMeta(hotelMetaStore, h._id, h.name);
-    setRating(m.rating); setDescription(m.description);
+    setRating(h.rating ?? m.rating); setDescription(h.description ?? m.description);
     setError(""); setSuccess("");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };

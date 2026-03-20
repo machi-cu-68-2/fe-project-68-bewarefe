@@ -152,7 +152,10 @@ export async function deleteBookingAction(bookingId: string) {
 export async function createHotelAction(
   name: string,
   address: string,
-  tel: string
+  tel: string,
+  picture?: string,
+  rating?: number,
+  description?: string
 ) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.token) {
@@ -163,7 +166,7 @@ export async function createHotelAction(
   }
 
   try {
-    const result = await createHotel(session.user.token, name, address, tel);
+    const result = await createHotel(session.user.token, name, address, tel, picture, rating, description);
 
     revalidateTag("hotels");
     revalidatePath("/hotel");
@@ -180,7 +183,10 @@ export async function updateHotelAction(
   hotelId: string,
   name: string,
   address: string,
-  tel: string
+  tel: string,
+  picture?: string,
+  rating?: number,
+  description?: string
 ) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.token) {
@@ -196,7 +202,10 @@ export async function updateHotelAction(
       hotelId,
       name,
       address,
-      tel
+      tel,
+      picture,
+      rating,
+      description
     );
 
     revalidateTag("hotels");

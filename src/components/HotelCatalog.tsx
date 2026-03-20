@@ -44,6 +44,8 @@ export default async function HotelCatalog({
               hotelId={hotel._id}
               hotelName={hotel.name}
               imgSrc={hotel.picture || undefined}
+              hotelRating={hotel.rating ?? null}
+              hotelDescription={hotel.description ?? null}
             />
           </Link>
         ))}
